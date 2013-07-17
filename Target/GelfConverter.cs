@@ -72,7 +72,11 @@ namespace Gelf4NLog.Target
         private static void AddAdditionalField(IDictionary<string, JToken> jObject, KeyValuePair<object, object> property)
         {
             var key = property.Key as string;
-            var value = property.Value as string;
+            JToken value = null;
+            if (property.Value != null && property.Value.GetType().IsArray)
+                value = new JArray(property.Value);
+            else
+                value = new JValue(property.Value);
 
             if (key == null) return;
 
